@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { render } from "react-dom";
 import axios from "axios";
 import Search from "./components/Search.jsx";
@@ -100,19 +99,14 @@ class Root extends React.Component {
   // write search functions in express and db
   search(searchWord) {
     // console.log(searchWord);
-    let searchObj = {
-      word: searchWord
-    }
-    // move into axios.get.then once express and db functions are written
-    this.setState({
-      searching: true
-    })
-    axios.get('/gloss/search', searchObj)
-      .then((response) => {
-        this.setState({
-          search: response.data,
+    axios.get(`/gloss/search/?userInput=${searchWord}`)
+        .then((response) => {
+          // console.log(response.data);
+          this.setState({
+            searching: true,
+            search: response.data
+          })
         })
-      })
       .catch((err) => {
         alert('What you searched does not exist in storage.');
       })
@@ -132,18 +126,25 @@ class Root extends React.Component {
         <Search onSearch={this.search} onSearchClear={this.searchClear}/>
         <div>
           Words and Definitions:
-          <WordList
-            words={this.state.words}
-            onEdit={this.edit}
-            onDelete={this.delete}
-          />
+          {this.state.searching ?
+            <WordList
+              words={this.state.search}
+              onEdit={this.edit}
+              onDelete={this.delete}
+            /> :
+            <WordList
+              words={this.state.words}
+              onEdit={this.edit}
+              onDelete={this.delete}
+            />
+          }
         </div>
       </>
     )
   }
 }
 
-ReactDOM.render(
+render(
   <Root />,
   document.getElementById("root")
 );

@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
-let {getAll, create, editWord, deleteWord} = require('./db.js');
+let {getAll, create, editWord, deleteWord, dbSearch} = require('./db.js');
 
 const app = express();
 
@@ -15,8 +15,34 @@ app.get('/gloss', (req, res) => {
       .then((words) => {
         res.send(words);
       })
-
+      .catch((err) => {
+        res.status(400).send('Unable to fulfill request at this time');
+      })
 })
+
+app.get(`/gloss/search/`, (req, res) => {
+  console.log(req.query.userInput);
+  dbSearch(req.query.userInput)
+    .then((searchedWords) => {
+        console.log(searchedWords);
+        res.send(searchedWords);
+      })
+      .catch((err) => {
+        res.status(400).send('Unable to find searched words');
+      })
+})
+
+// app.get(`/gloss/search/:userInput`, (req, res) => {
+//   // console.log(req.body);
+//   dbSearch(req.params.userInput)
+//     .then((searchedWords) => {
+//         console.log(searchedWords);
+//         res.send(searchedWords);
+//       })
+//       .catch((err) => {
+//         res.status(400).send('Unable to find searched words');
+//       })
+// })
 
 app.post('/gloss', (req, res) => {
   create(req.body)

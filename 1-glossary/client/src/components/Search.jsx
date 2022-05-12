@@ -20,8 +20,12 @@ class Search extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('You clicked submit.')
-    this.props.onSearch(this.state.value);
+    if (this.state.value === '') {
+      alert('Need to enter a word to search for');
+    } else {
+      console.log('You clicked submit.')
+      this.props.onSearch(this.state.value);
+    }
   }
 
   handleClear(e) {

@@ -36,10 +36,19 @@ let deleteWord = (word) => {
   return Word.deleteOne(dbId); // Model.deleteOne({condition})
 }
 
+let dbSearch = (searchWord) => {
+  let searchObj = {
+    word: { $regex: searchWord, $options: "i" }
+  }
+  // console.log(searchObj);
+  return Word.find(searchObj);
+}
+
 // 3. Export the models
 module.exports.Word = Word;
 module.exports.getAll = getAll;
 module.exports.create = create;
 module.exports.editWord = editWord;
 module.exports.deleteWord = deleteWord;
+module.exports.dbSearch = dbSearch;
 // 4. Import the models into any modules that need them
