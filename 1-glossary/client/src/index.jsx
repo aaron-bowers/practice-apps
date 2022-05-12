@@ -37,19 +37,23 @@ class Root extends React.Component {
   }
 
   add(wordObj) {
-    axios.post('/gloss', wordObj)
-      .then(() => {
-        return axios.get('/gloss')
-      })
-      .then((response) => {
-        this.setState({
-          words: response.data
+    if (this.state.searching) {
+      alert(`Can't add a word right now, because you are searching. Please click 'Clear Search' to add more words.`)
+    } else {
+      axios.post('/gloss', wordObj)
+        .then(() => {
+          return axios.get('/gloss')
         })
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('This word already exists. Please enter a new one.');
-      })
+        .then((response) => {
+          this.setState({
+            words: response.data
+          })
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('This word already exists. Please enter a new one.');
+        })
+    }
   }
 
   edit(wordObj) {
@@ -97,6 +101,14 @@ class Root extends React.Component {
       })
   }
 
+  // search(searchWord) {
+  //   // iterate over each objects word property
+  //   for (var i = 0; i < this.state.words.length; i++) {
+
+  //   }
+  // }
+
+  // search function to search through database
   search(searchWord) {
     axios.get(`/gloss/search/?userInput=${searchWord}`)
         .then((response) => {
