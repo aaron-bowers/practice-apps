@@ -1,21 +1,42 @@
 import React from "react";
-import { render } from "react-dom";
 
 
-const WordList = ({words}) => {
-  // console.log(words);
+class WordList extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <>
-      {words.map((word, id) => {
-        return (
-          <div key={id}>
-            <div>{word.word}: {word.definition}</div>
-          </div>
-        )})
-      }
-    </>
-  )
+    this.onEditClick = this.onEditClick.bind(this);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
+  }
+
+  onEditClick (e) {
+    (e).preventDefault;
+    console.log('clicked edit');
+    this.props.onEdit(e.target.value);
+  }
+
+  onDeleteClick (e) {
+    (e).preventDefault;
+    console.log('clicked delete');
+    this.props.onDelete(e.target.value);
+  }
+
+  render() {
+
+    return (
+      <>
+        {this.props.words.map((word, id) => {
+          return (
+            <div key={id}>
+              <button className="edit-btn" value={JSON.stringify(word)} onClick={this.onEditClick}>edit</button>
+              <button className="delete-btn" value={JSON.stringify(word)} onClick={this.onDeleteClick}>delete</button>
+              <span>{word.word}: {word.definition}</span>
+            </div>
+          )})
+        }
+      </>
+    )
+  }
 };
 
 export default WordList;
