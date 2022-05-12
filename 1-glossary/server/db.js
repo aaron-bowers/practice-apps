@@ -40,7 +40,6 @@ let dbSearch = (searchWord) => {
   let searchObj = {
     word: { $regex: searchWord, $options: "i" }
   }
-  // console.log(searchObj);
   return Word.find(searchObj);
 }
 

@@ -21,10 +21,9 @@ app.get('/gloss', (req, res) => {
 })
 
 app.get(`/gloss/search/`, (req, res) => {
-  console.log(req.query.userInput);
+  // console.log(req.query.userInput);
   dbSearch(req.query.userInput)
     .then((searchedWords) => {
-        console.log(searchedWords);
         res.send(searchedWords);
       })
       .catch((err) => {
@@ -50,7 +49,7 @@ app.post('/gloss', (req, res) => {
         res.status(201).send();
       })
       .catch((err) => {
-        res.status(500).send('This word already exists.')
+        res.status(400).send('This word already exists.')
       })
 })
 

@@ -96,12 +96,10 @@ class Root extends React.Component {
         alert('Unable to delete word or definition.')
       })
   }
-  // write search functions in express and db
+
   search(searchWord) {
-    // console.log(searchWord);
     axios.get(`/gloss/search/?userInput=${searchWord}`)
         .then((response) => {
-          // console.log(response.data);
           this.setState({
             searching: true,
             search: response.data
@@ -111,7 +109,7 @@ class Root extends React.Component {
         alert('What you searched does not exist in storage.');
       })
   }
-  // write search clear to update this.searching to false
+
   searchClear() {
     this.setState({
       searching: false
