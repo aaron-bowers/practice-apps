@@ -16,16 +16,15 @@ app.use(sessionHandler);
 // Logs the time, session_id, method, and url of incoming requests.
 app.use(logger);
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 // Serves up all static and generated assets in ../client/dist.
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-/**** 
- * 
- * 
- * Other routes here....
- *
- * 
- */
+app.post("/user", (req, res) => { // because it's post and data is being passed in as the 2nd arg to post, that data will be found in req.body
+  console.log(req.body);
+
+})
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);
