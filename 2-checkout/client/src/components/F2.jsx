@@ -25,20 +25,32 @@ class F2 extends React.Component {
   }
 
   handleCity(e) {
-    this.setState({
-      city: e.target.value
-    });
+    if (Number(e.target.value)) {
+      alert('City cannot include numbers');
+    } else {
+      this.setState({
+        city: e.target.value
+      });
+    }
   }
 
   handleState (e) {
-    this.setState({
-      state: e.target.value
-    });
+    if (Number(e.target.value)) {
+      alert('State cannot include numbers');
+    } else {
+      this.setState({
+        state: e.target.value
+      });
+    }
   }
 
   handleZip (e) {
     if (e.target.value.includes(' ')) {
       alert('cannot use spaces');
+    } else if (!Number(e.target.value)) {
+      alert('must use numbers');
+    } else if (e.target.value.length > 5) {
+      alert('zipcode cannot be longer than 5 numbers');
     } else {
       this.setState({
         zip: e.target.value
@@ -55,6 +67,13 @@ class F2 extends React.Component {
     } else {
       this.setState({
         nexting: true
+      })
+      this.props.onShipping({
+        email: this.props.email,
+        street: this.state.street,
+        city: this.state.city,
+        state: this.state.state,
+        zip: this.state.zip
       })
     }
   }
@@ -90,7 +109,7 @@ class F2 extends React.Component {
           }
         </form>
         <>
-          {this.state.nexting === true ? <F3 /> : "After clicking next, we'll be collecting your credit card information."}
+          {this.state.nexting === true ? <F3 email={this.props.email} onPurchase={this.props.onPurchase}/> : "After clicking next, we'll be collecting your credit card information."}
         </>
       </>
     )

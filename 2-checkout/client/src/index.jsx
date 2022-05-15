@@ -9,10 +9,13 @@ class Root extends React.Component {
 
     this.state = {
       cookie: JSON.stringify(document.cookie, undefined, "\t"),
-      checkingOut: false
+      checkingOut: false,
+      purchased: false
     }
     this.handleCheckOut = this.handleCheckOut.bind(this);
     this.handleNewAccount = this.handleNewAccount.bind(this);
+    this.handleShipping = this.handleShipping.bind(this);
+    this.handlePurchase = this.handlePurchase.bind(this);
   }
 
   handleCheckOut (e) {
@@ -33,12 +36,38 @@ class Root extends React.Component {
       })
   }
 
+  handleShipping(shippingInfo) {
+    console.log(shippingInfo);
+    post("/shipping", shippingInfo)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  handlePurchase(creditInfo) {
+    console.log(creditInfo);
+    post("/purchase", creditInfo)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          purchased: true
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Unable to complete purchase. Please confirm that all of your credit card information is correct.')
+      })
+  }
+
 
   render() {
     return (
       <>
         {this.state.checkingOut === true ? // if checking out
-          <F1 onNewAccount={this.handleNewAccount}/> : // display F1, ':' otherwise display home page
+          <F1 onNewAccount={this.handleNewAccount} onShipping={this.handleShipping} onPurchase={this.handlePurchase}/> : // display F1, ':' otherwise display home page
           <div>
             <h1>Hello, Buy More Customers!</h1>
             <span>

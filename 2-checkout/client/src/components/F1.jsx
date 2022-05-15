@@ -57,8 +57,10 @@ class F1 extends React.Component {
       alert('Please provide your email and new account password in order to proceed.');
     } else if (!this.state.email.includes("@")) {
       alert('Email must include an @ symbol.');
-    } else if (this.state.password.length < 6) {
-      alert('Password must contain a minimum of 7 characters');
+    } else if (this.state.email.length < 6) {
+      alert('Email must include domain (e.g. ".com", ".org", etc)');
+    } else if (this.state.password.length < 7 || this.state.password.length > 20) {
+      alert('Password must contain a minimum of 7 characters and a max of 20 characters');
     } else {
       this.generateObscurePassword(this.state.password);
       this.setState({
@@ -97,7 +99,7 @@ class F1 extends React.Component {
           }
         </form>
         <>
-          {this.state.nexting === true ? <F2 onNewAccount={this.props.onNewAccount.bind(this)}/> : "After clicking next, we'll be collecting your shipping address."}
+          {this.state.nexting === true ? <F2 onShipping={this.props.onShipping} onPurchase={this.props.onPurchase} email={this.state.email}/> : "After clicking next, we'll be collecting your shipping address."}
         </>
       </>
     )

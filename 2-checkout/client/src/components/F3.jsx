@@ -9,7 +9,7 @@ class F3 extends React.Component {
       cvv: '',
       billZip: '',
     }
-    this.handlePurchase= this.handlePurchase.bind(this);
+    this.handlePurchasing= this.handlePurchasing.bind(this);
     this.handleCredit = this.handleCredit.bind(this);
     this.handleExpiration = this.handleExpiration.bind(this);
     this.handleCvv = this.handleCvv.bind(this);
@@ -17,9 +17,15 @@ class F3 extends React.Component {
   }
 
   handleCredit(e) {
+  if (!Number(e.target.value)) {
+    alert('must use numbers');
+  } else if (e.target.value.length > 24) {
+    alert('card number cannot be longer than 24 numbers');
+  } else {
     this.setState({
       credit: e.target.value
     });
+  }
   }
 
   handleExpiration (e) {
@@ -31,6 +37,10 @@ class F3 extends React.Component {
   handleCvv (e) {
     if (e.target.value.includes(' ')) {
       alert('Cannot use spaces. Can only use numbers');
+    } else if (!Number(e.target.value)) {
+      alert('must use numbers');
+    } else if (e.target.value.length > 4) {
+      alert('Cannot be longer than 4 numbers');
     } else {
       this.setState({
         cvv: e.target.value
@@ -41,6 +51,10 @@ class F3 extends React.Component {
   handleBillZip (e) {
     if (e.target.value.includes(' ')) {
       alert('Cannot use spaces for zipcodes');
+    } else if (!Number(e.target.value)) {
+      alert('must use numbers');
+    } else if (e.target.value.length > 5) {
+      alert('Billing zipcode cannot be longer than 5 numbers');
     } else {
       this.setState({
         billZip: e.target.value
@@ -48,15 +62,21 @@ class F3 extends React.Component {
     }
   }
 
-  handlePurchase(e) {
+  handlePurchasing(e) {
     e.preventDefault();
     console.log("Make it rain!");
     // console.log(this.state.credit, this.state.expire, this.state.cvv, this.state.billZip);
     if (this.state.credit === '' || this.state.expire === '' || this.state.cvv === '' || this.state.billZip === '') {
       alert('Please make sure to fill in all fields');
+    } else if (this.state.cvv.length < 3) {
+      alert('CVV must be a minimum of 3 numbers');
     } else {
-      this.setState({
-        nexting: true
+      this.props.onPurchase({
+        email: this.props.email,
+        credit: this.state.credit,
+        expiration: this.state.expire,
+        cvv: this.state.cvv,
+        billZip: this.state.billZip
       })
     }
   }
@@ -84,7 +104,7 @@ class F3 extends React.Component {
               <input type="text" value={this.state.billZip} onChange={this.handleBillZip}/>
             </div>
           </label>
-          <button type="submit" value="Purchase" onSubmit={this.handlePurchase}>Purchase</button>
+          <button type="submit" value="Purchase" onClick={this.handlePurchasing}>Purchase</button>
         </form>
       </>
     )
