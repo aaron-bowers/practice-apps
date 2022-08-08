@@ -11,7 +11,7 @@ app.use(express.urlencoded( { extended: true } ))
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.get('/gloss', (req, res) => {
-  getAll({})
+  getAll()
       .then((words) => {
         res.send(words);
       })
